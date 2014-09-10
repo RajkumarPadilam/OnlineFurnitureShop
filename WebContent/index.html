@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<style>
+
+table.center {
+    margin-left:auto; 
+    margin-right:auto;
+  }
+
+#AllCategories {
+    float: left;
+    width: 15em;
+    text-decoration: none;
+    color: black;
+    text-transform:uppercase;
+    background-color: grey;
+    padding: 0.4em 0.6em;
+    border-right: 1px solid white;
+}
+
+#heading li{
+    float: left;
+    width: 15em;
+    color: blue;
+    font:bold;
+    text-decoration:underline;
+    text-transform:capitalize;;
+    background-color: grey;
+    padding: 0.4em 0.6em;
+    border-bottom:5px solid white;
+}
+
+#navigation { 
+    margin-left:0;
+    list-style-type: none;
+    float: left;
+ }
+#navigation li a {
+    display: block;
+    padding: 10px 15px;
+    background: #cd0500;
+    border-top: 5px solid #eee;
+    border-bottom: 1px solid #999;
+    text-decoration: none;
+    color: white;
+}
+#navigation li a:hover {
+    background:black;
+    color: #fff;
+}
+
+.myMenu {
+	margin:0;
+	padding:0;
+}
+
+.myMenu li {
+	list-style:none;
+	float:left;
+	font:12px Arial, Helvetica, sans-serif #111;
+	
+}
+
+.myMenu li a:link, .myMenu li a:visited {
+        width:12em;
+	display:block;
+	text-decoration:none;
+	background-color:#cd0500;
+	padding: 0.5em 2em;
+	margin:0;
+	border-right: 1px solid #fff;
+	color:white;
+}
+
+.myMenu li a:hover {
+	background-color:black;	
+}
+</style>
+
+<body bgcolor="#EEEEEE">
+
+<!--  to display the heading--> 
+
+<div align="center" id="hbar" style="background-color:black;height:80px;width:1320px;float:left;border:5px solid grey">
+<h1 align="center" style="margin-bottom:0;color:#cd0500;">Online furniture shopping</h1>
+</div>
+
+<!-- to display horizontal menu -->
+
+<div id="hmenu" style="background-color:#f0eddf;float:left;margin-top:0.1cm;">
+<ul class="myMenu">
+    <li><a href="http://localhost:8080/OnlineFurnitureApp/index.html">Home</a></li>
+    <li><a id="location" href="#">Location</a></li>
+    <li><a id="contact" href="#">Contact Us</a></li>
+    <li> Search: <input type="textBox" size="47" id='searchString' name="search"><button type="button" onclick='basicSearch()' id="search">Search</button><button type="button" id="Advsearch" onclick='showAdvancedSearchPage()'>Advanced Search</button></li>
+</ul>
+</div>
+
+<!-- to display categories as left vertical menu -->
+
+<div id="Category" style="float:left;">
+<ul id="navigation"  >
+  <li ><a id='heading' style="background-color:black">CATEGORY</a></li>
+  <li ><a onclick='getSubCategories(this)'>Living room Furniture</a></li>
+  <li><a onclick='getSubCategories(this)'>Bedroom Furniture</a></li>
+  <li><a onclick='getSubCategories(this)'>Dining room & Bar Furniture</a></li>
+  <li><a onclick='getSubCategories(this)'>'Home office Furniture'</a></li>
+  <li><a onclick='getSubCategories(this)'>Kids Furniture</a></li>
+  <li><a onclick='getSubCategories(this)'>Bathroom Furniture</a></li>
+</ul>
+</div>
+
+<!--  to display the image items(content) -->
+
+<div id="content" style="background-color:#EEEEEE;width:700px;height:580px;float:left;overflow:auto; padding-left:5cm;">
+<table id="ta">
+<tr>
+<td><img border="0" id="image1" hspace="30" vspace="50" src="http://www.ikea.com/ms/media/roomsettings/20141/kitchen/20141_kiro10c/20141_kiro10c_hs02_PE374722.jpg" alt="alt" width="150" height="150"></td>
+<td valign="center">Item<h4 id="itemName1"> Furniture</h4>Price: $100 <br> <a href="file:///C:/Users/Bhargavi/Desktop/Summer%202014/SE-1/Web/Item.html">more details</a></td>
+<td><img border="0" id="image2" hspace="30" vspace="50" src="http://www.ikea.com/ms/media/roomsettings/20141/livingroom/20141_liro10a/20141_liro10a_01_PE367077.jpg" alt="alt" width="150" height="150"></td>
+<td valign="center">Item<h4 id="itemName2"> Furniture</h4>Price: $500 <br> <a href="file:///C:/Users/Bhargavi/Desktop/Summer%202014/SE-1/Web/Item.html">more details</a></td>
+</tr>
+	
+<tr> 
+<td><img border="0" id="image3" hspace="30" vspace="50" src="http://www.ikea.com/ms/media/roomsettings/20141/kitchen/20141_kiro04c/20141_kiro04c_01_PE374944.jpg" alt="alt" width="150" height="150"></td>
+<td valign="center">Item<h4 id="itemName3"> Furniture</h4>Price: $100 <br> <a href="file:///C:/Users/Bhargavi/Desktop/Summer%202014/SE-1/Web/Item.html">more details</a></td>
+<td><img border="0" id="image4" hspace="30" vspace="50" src="http://www.ikea.com/ms/media/roomsettings/20141/kitchen/20141_kiro04c/20141_kiro04c_hs02_PE373233.jpg" alt="alt" width="150" height="150"></td>
+<td valign="center">Item<h4 id="itemName4"> Furniture</h4>Price: $100 <br> <a href="file:///C:/Users/Bhargavi/Desktop/Summer%202014/SE-1/Web/Item.html">more details</a></td>
+</tr>
+</div>
+
+
+<script type="text/javascript">
+
+//dynamic location tab content
+
+		document.getElementById("location").onclick=writeData;
+		function writeData()
+		{
+			document.getElementById("content").innerHTML="<b>STORE LOCATIONS</b><table border=1 width=100%><tr><td><b>Dallas</b><br><a href=https://www.google.com/maps/place/1902+Main+St,+Dallas,+TX+75201/@32.7813866,-96.7955928,17z/data=!3m1!4b1!4m2!3m1!1s0x864e991f7809deef:0x4743c0e6ac86418f>View map</a></td><td><b>Address :</b>800 West Campbell Road Richardson, TX 75080-302<br><b>Hours:</b>Mon-Friday:9AM-6PM<br><b>Phone:</b>(817) 945-6220 <br><b>Email:</b> fineFurniture@mavericks.Net</td></tr><tr><td><b>Austin</b><br><a href=https://www.google.com/maps/place/7801+Burnet+Rd,+Austin,+TX+78757/@30.3545787,-97.7304429,17z/data=!3m1!4b1!4m2!3m1!1s0x8644cbb0286143b9:0x3f5fc647cd1875fe>View map</a></td><td><b>Address</b>7801 Burnet Rd Austin, TX<br><b>Hours:</b>Mon-Friday : 9AM-6PM<br><b>Phone:</b>(817) 945-6422 <br><b>Email:</b> fineFurniture@mavericks.Net</td></tr><tr><td><b>Arlington</b><br><a href=https://www.google.com/maps/place/2202+Mill+Creek+Dr,+Arlington,+TX+76010/@32.7097513,-97.1079971,17z/data=!4m2!3m1!1s0x864e7d45dd83eb09:0x442757d250625372>View map</a></td><td><b>Address:</b>2202 E Creek Mill Rd Arlington, TX 76013<br><b>Hours:</b>Mon-Friday:9AM-6PM<br><b>Phone:</b>(817) 946-6460<br><b>Email:</b>MavericksFurniture@mavericks.Net</td></tr><tr><td><b>Plano</b><br><a href=https://www.google.com/maps/place/1201+N+Central+Expy,+Plano,+TX+75075/@33.0181517,-96.7106072,17z/data=!3m1!4b1!4m2!3m1!1s0x864c18e3c074fcd5:0x8a1eeb2b5c900c4a>View map</a></td><td><b>Address:</b>1201 N Central Expy Plano, TX<br><b>Timings:</b>Mon-Friday:9AM-6PM<br><b>Phone:</b>(817) 977-6460 <br><b>Email:</b>fineFurniture@mavericks.Net</td></tr><tr><td><b>Irving</b><br><a href=https://www.google.com/maps/place/1500+E+Irving+Blvd,+Irving,+TX+75060/@32.8078943,-96.9275137,17z/data=!3m1!4b1!4m2!3m1!1s0x864e8351bda746d7:0x5ef863d1c31d26a0>View map</a></td><td><b>Address:</b>1500 E Irving Blvd Irving, TX<br><b>Hours:</b>Mon-Friday:9AM-6PM<br><b>Phone:</b>(817) 946-6460<br><b>Email:</b> MavericksFurniture@mavericks.Net</td></tr></table>";
+			return false;
+		}
+//dynamic contact tab content
+		
+		document.getElementById("contact").onclick=writeContent;
+		function writeContent()
+		{
+		    document.getElementById("content").innerHTML="<table><tr><td><p><b> Rajkumar Padilam </b><br>rajkumar.padilam@mavs.uta.edu<br></p></td><td><p><b>Kundhavai Nambi</b></p>kundhavai.nambi@mavs.uta.edu<br></p></td><td><p><b>Bhargavi Urs</b></p>bhargavi.urs@mavs.uta.edu<br></p></td></tr><tr><td><p><b>Nun Liu</b></p>nun.liu@mavs.uta.edu<br></p></td><td><p><b>Sanika Kulkarni</b></p>sanika.kulkarni@mavs.uta.edu<br></p></td><td><p><b>Vaibhav</b></p>vaibhav.manchala@mavs.uta.edu<br></p></td></table>";
+			return false;
+		}
+
+//function to fetch and dispaly product details page
+
+		function createProductDetailsPage(url)
+		{
+		
+			var dataString ={TAG:'getItemDetails',ITEM_URL:url};	
+			
+			$.ajax({
+				url: 'http://localhost:8080/OnlineFurnitureApp/processRequest',
+				data: dataString,
+				dataType: 'json',
+				success: function(response) 
+				{			
+					var table=document.createElement("table");
+					table.className ="center";
+					
+					var row1=document.createElement("tr");
+					var row2=document.createElement("tr");
+					var row3=document.createElement("tr");
+					var row4=document.createElement("tr");
+					var row5=document.createElement("tr");
+					var row6=document.createElement("tr");
+					var row7=document.createElement("tr");
+					var row8=document.createElement("tr");
+					var row9=document.createElement("tr");
+					
+//elements created to display product description with image
+					var column1=document.createElement("td");
+					var description=document.createElement("td");
+					var column3=document.createElement("td");
+					var column4=document.createElement("td");
+					var image1=document.createElement("img"); 
+					image1.hspace="30";
+					image1.vspace="50";
+					image1.width="500";
+					image1.height="300";
+					image1.src=response.ITEM.ITEM_URL;
+					column1.appendChild(image1);
+					row1.appendChild(column1);
+					
+					row2.innerHTML="<td><b>Description</b></td>";
+					
+					description.innerHTML=response.ITEM.ITEM_DESCRIPTION;
+					row3.appendChild(description);
+
+//fetching the number of available items as per the location
+				
+					row4.innerHTML="<td><b>Availability</b></td><ul>";
+					row5.innerHTML="<li><a onclick='writeData()' href='#'>Dallas,TX : Availability :"+parseInt(response.ITEM.AVAILABILITY,10)*1+"</a></li>";
+					row6.innerHTML="<li><a onclick='writeData()' href='#'>Arlington,TX : Availability :"+parseInt(response.ITEM.AVAILABILITY,10)*2+"</a></li>";
+					row7.innerHTML="<li><a onclick='writeData()' href='#'>Austin,TX : Availability :"+parseInt(response.ITEM.AVAILABILITY,10)*3+"</a></li>";
+					row8.innerHTML="<li><a onclick='writeData()' href='#'>Plano,TX : Availability :"+parseInt(response.ITEM.AVAILABILITY,10)*4+"</a></li>";
+					row9.innerHTML="<li><a onclick='writeData()' href='#'>Irving,TX : Availability :"+parseInt(response.ITEM.AVAILABILITY,10)*5+"</a></li></ul>";
+					
+					table.appendChild(row1);
+					table.appendChild(row2);
+					table.appendChild(row3);
+					
+					var space=document.createElement("tr");
+					var space1=document.createElement("td");
+					space.appendChild(space1);
+					table.appendChild(space);
+					
+					table.appendChild(row4);
+					table.appendChild(row5);
+					table.appendChild(row6);
+					table.appendChild(row7);
+					table.appendChild(row8);
+					table.appendChild(row9);
+
+					var myNode = document.getElementById("content");
+					while (myNode.firstChild) {
+						myNode.removeChild(myNode.firstChild);
+					}
+					myNode.appendChild(table);
+				}
+			});
+						
+		}
+		
+
+//function to perform Basic search
+		
+		function basicSearch(searchString)
+		{
+			var dataString ={TAG:'basicSearch', SEARCH_STRING:document.getElementById("searchString").value};	
+			
+			$.ajax({
+				url: 'http://localhost:8080/OnlineFurnitureApp/processRequest',
+				data: dataString,
+				dataType: 'json',
+				success: function(response) 
+				{			
+					
+					var myNode = document.getElementById("content");
+					while (myNode.firstChild) {
+						myNode.removeChild(myNode.firstChild);
+					}
+					
+					if(response.success=="1")
+					 {	
+									var table=document.createElement("table");
+									table.className ="center";
+									var space=document.createElement("tr");
+									var space1=document.createElement("td");
+									space.appendChild(space1);
+									table.appendChild(space);
+									
+									
+									var result=document.createElement("tr");
+									var result1=document.createElement("td");
+									result1.valign="center";
+									result1.innerHTML="<h3>Search Results Found :</h3>"
+									result.appendChild(result1);
+									table.appendChild(result);
+									
+									var x= parseInt(response.COUNT,10);
+									for(var i=0;i<x-2;i=i+2)
+									{
+										var row=document.createElement("tr");
+										var column1=document.createElement("td");
+										var column2=document.createElement("td");
+										var image1=document.createElement("img");var column11=document.createElement("td");
+										
+										
+										var column11=document.createElement("td");
+										column11.valign="center";
+										column11.innerHTML=response.ITEMS[i].ITEM_CRITERIA;
+													
+										var column21=document.createElement("td");
+										column21.valign="center";
+										column21.innerHTML=response.ITEMS[i+1].ITEM_CRITERIA;
+										
+										
+										
+										var image1=document.createElement("img");
+										image1.hspace="30";
+										image1.vspace="30";
+										image1.width="150";
+										image1.height="150";
+										image1.cursor="hand";
+										image1.src=response.ITEMS[i].ITEM_URL;
+										image1.onclick=function() { createProductDetailsPage(this.src) };
+										
+										var image2=document.createElement("img");
+										image2.hspace="30";
+										image2.vspace="30";
+										image2.width="150";
+										image2.height="150";
+										image1.cursor="hand";
+										image2.src=response.ITEMS[i+1].ITEM_URL;
+										image2.onclick=function() { createProductDetailsPage(this.src) };
+										
+										column1.appendChild(image1);
+										column2.appendChild(image2);
+					
+										row.appendChild(column1);
+										row.appendChild(column11);
+										row.appendChild(column2);
+										row.appendChild(column21);
+					
+										table.appendChild(row);
+								   }
+									myNode.appendChild(table);
+						}
+						else
+						{
+							var noResults=document.createElement("h3");
+							noResults.innerHTML="Sorry, no search results found";
+							noResults.align="center";
+							myNode.appendChild(noResults);
+						}
+				   }
+			});
+		}
+		
+//function to fetch all the URLS according to the category chosen
+		
+		function getItemURLSForCategory(data)
+		{
+			var dataString ={TAG:'getItemsForCategory',CATEGORY_NAME:data};	
+			
+			$.ajax({
+				url: 'http://localhost:8080/OnlineFurnitureApp/processRequest',
+				data: dataString,
+				dataType: 'json',
+				success: function(response) 
+				{			
+					createImages();
+					var image1=document.getElementById("image1");
+					image1.src=response.ITEMS[0].ITEM_URL;
+					image1.onclick=function() { createProductDetailsPage(this.src) };
+					var image2=document.getElementById("image2");
+					image2.src=response.ITEMS[1].ITEM_URL;
+					image2.onclick=function() { createProductDetailsPage(this.src) };
+					var image3=document.getElementById("image3");
+					image3.src=response.ITEMS[2].ITEM_URL;
+					image3.onclick=function() { createProductDetailsPage(this.src) };
+					var image4=document.getElementById("image4");
+					image4.src=response.ITEMS[3].ITEM_URL;
+					image4.onclick=function() { createProductDetailsPage(this.src) };
+				}
+			});
+		}
+
+//function to get all URLs for the subcategory chosen in a particular category
+		
+		function getItemURLSForSubCategory(Category,SubCategory)
+		{
+			
+			var dataString ={TAG:'getItems',CATEGORY_NAME:Category,SUBCATEGORY_NAME:SubCategory};	
+ 		   
+			$.ajax({
+				url: 'http://localhost:8080/OnlineFurnitureApp/processRequest',
+				data: dataString,
+				dataType: 'json',
+				success: function(response) 
+				{			
+					createImages();
+					var image1=document.getElementById("image1");
+					image1.src=response.ITEMS[0].ITEM_URL;
+					image1.onclick=function() { createProductDetailsPage(this.src) };
+					var image2=document.getElementById("image2");
+					image2.src=response.ITEMS[1].ITEM_URL;
+					image2.onclick=function() { createProductDetailsPage(this.src) };
+					var image3=document.getElementById("image3");
+					image3.src=response.ITEMS[2].ITEM_URL;
+					image3.onclick=function() { createProductDetailsPage(this.src) };
+					var image4=document.getElementById("image4");
+					image4.src=response.ITEMS[3].ITEM_URL;
+					image4.onclick=function() { createProductDetailsPage(this.src) };
+				}
+			});
+		}
+		
+		function showAdvancedSearchPage()
+		{
+			var myNode = document.getElementById("content");
+			while (myNode.firstChild) {
+				myNode.removeChild(myNode.firstChild);
+			}
+			
+			category = document.createElement("select");
+			var living = document.createElement("option");
+			living.text = "Living room Furniture";
+			category.options.add(living);
+			
+			var bedroom = document.createElement("option");
+			bedroom.text = "Bedroom Furniture";
+			category.options.add(bedroom);
+			
+			var dining = document.createElement("option");
+			dining.text = "Dining room & Bar Furniture";
+			category.options.add(dining);
+			
+			var home = document.createElement("option");
+			home.text = "Home office Furniture";
+			category.options.add(home);
+			
+			var kids = document.createElement("option");
+			kids.text = "Kids Furniture";
+			category.options.add(kids);
+			
+			var bathroom = document.createElement("option");
+			bathroom.text = "Bathroom Furniture";
+			category.options.add(bathroom);
+			
+			titleCategory = document.createElement("h3");
+			titleCategory.innerHTML = "Select Category";
+			myNode.appendChild(titleCategory);
+			myNode.appendChild(category);
+			
+			var subdiv1= document.createElement("div");
+			myNode.appendChild(subdiv1);
+			
+			category.onchange=function(){
+			//alert(category.options[category.selectedIndex].text);
+			showAdvancedSearchPage2(subdiv1 , category.options[category.selectedIndex].text);
+			};
+			
+			
+		}
+		
+		function showAdvancedSearchPage2(subdiv , categoryName)
+		{
+			
+			while (subdiv.firstChild) {
+				subdiv.removeChild(subdiv.firstChild);
+			}
+			
+			subcategory = document.createElement("select");
+			
+			
+			titlesubcategory = document.createElement("h3");
+			titlesubcategory.innerHTML = "Select subcategory";
+			subdiv.appendChild(titlesubcategory);
+			
+			var dataString ={TAG:'getSubCategories',CATEGORY_NAME: categoryName};	
+			
+			$.ajax({
+				url: 'http://localhost:8080/OnlineFurnitureApp/processRequest',
+				data: dataString,
+				dataType: 'json',
+				success: function(response) 
+				{
+
+					for (var i=0;i<response.SUBCATEGORIES.length;i++) {
+						
+						var option = document.createElement("option");
+						option.text = response.SUBCATEGORIES[i].SUBCATEGORY;
+						subcategory.options.add(option);
+						
+					}
+					
+				}
+			});
+						
+			subdiv.appendChild(subcategory);
+			
+			var subdiv2= document.createElement("div");
+			subdiv.appendChild(subdiv2);
+			
+			subcategory.onchange=function(){
+			//alert(category.options[category.selectedIndex].text);
+			showAdvancedSearchPage3(subdiv2 , categoryName, subcategory.options[subcategory.selectedIndex].text);
+			};
+				
+		}
+
+		function showAdvancedSearchPage3(subdiv2 , categoryName , subCategoryName)
+		{
+			//alert(categoryName+" : "+subCategoryName);
+			
+			var valuesChoosed="";
+			var sortChoosed="";
+			
+			while (subdiv2.firstChild) {
+				subdiv2.removeChild(subdiv2.firstChild);
+			}
+
+			criteriaNameHeading = document.createElement("h4");
+			criteriaNameHeading.innerHTML = "Sort By :";						
+			subdiv2.appendChild(criteriaNameHeading);
+			
+			var criteriaNameHeading = document.createElement("h5");
+			criteriaNameHeading.innerHTML = "PRICE";						
+			subdiv2.appendChild(criteriaNameHeading);
+			
+			var labelName = document.createElement("label");
+			labelName.innerHTML="ASC";
+			
+			var criteriaName1 = document.createElement("input");
+			criteriaName1.type = "checkbox";
+			criteriaName1.value = "PRICE";
+			criteriaName1.name = "ASC";
+			criteriaName1.onclick = function() { if(this.checked) sortChoosed=this.value+":"+this.name+","} ;
+			labelName.appendChild(criteriaName1);
+			subdiv2.appendChild(labelName);
+			
+			var labelName = document.createElement("label");
+			labelName.innerHTML="DESC";
+			
+			var criteriaName1 = document.createElement("input");
+			criteriaName1.type = "checkbox";
+			criteriaName1.value = "PRICE";
+			criteriaName1.name = "DESC";
+			criteriaName1.onclick = function() { if(this.checked) sortChoosed=this.value+":"+this.name+","} ;
+			labelName.appendChild(criteriaName1);
+			subdiv2.appendChild(labelName);
+
+			
+			
+			
+			titlesubcategory = document.createElement("h3");
+			titlesubcategory.innerHTML = "Select Values";
+			subdiv2.appendChild(titlesubcategory);
+			
+			var dataString ={TAG:'getCriteria',CATEGORY_NAME: categoryName, SUBCATEGORY_NAME : subCategoryName};	
+			
+			$.ajax({
+				url: 'http://localhost:8080/OnlineFurnitureApp/processRequest',
+				data: dataString,
+				dataType: 'json',
+				success: function(response) 
+				{
+					for (var i=0;i<response.CRITERIAS.length;i++) 
+					{
+						//var criteriaName = document.createElement("h4");
+						var criteriaName = response.CRITERIAS[i].CRITERIA;						
+						//subdiv2.appendChild(criteriaName);
+						
+						var dataString ={TAG:'getValues',CATEGORY_NAME: categoryName, SUBCATEGORY_NAME : subCategoryName, CRITERIA_NAME : criteriaName};	
+						
+						$.ajax({
+							url: 'http://localhost:8080/OnlineFurnitureApp/processRequest',
+							data: dataString,
+							dataType: 'json',
+							success: function(response) 
+							{
+								var criteriaNameHeading = document.createElement("h5");
+								criteriaNameHeading.innerHTML = response.CRITERIA;						
+								subdiv2.appendChild(criteriaNameHeading);
+								
+								for (var i=0;i<response.VALUES.length;i++) {
+									var labelName = document.createElement("label");
+									labelName.innerHTML=response.VALUES[i].VALUE;
+									
+									var criteriaName1 = document.createElement("input");
+									criteriaName1.type = "checkbox";
+									criteriaName1.value = response.CRITERIA;
+									criteriaName1.name = response.VALUES[i].VALUE;
+									criteriaName1.onclick = function() { if(this.checked) valuesChoosed+=this.value+":"+this.name+","} ;
+									labelName.appendChild(criteriaName1);
+									subdiv2.appendChild(labelName);
+									
+								}
+							}
+						});
+					}
+				}	
+			
+			});
+			
+			var element = document.createElement("input");
+			element.type = 'button';
+			element.name = 'submit';
+			element.value = 'Submit';
+		    element.onclick = function() { // Note this is a function
+		        //alert(sortChoosed);
+		        advancedSearch(categoryName , subCategoryName , valuesChoosed, sortChoosed);
+		    };
+		    subdiv2.appendChild(element);
+		}
+		
+		function advancedSearch(CategoryName , SubCategoryName , input, sort)
+		{
+			var dataString ={TAG:'advancedSearch', CATEGORY_NAME : CategoryName, SUBCATEGORY_NAME : SubCategoryName, INPUT : input, SORT : sort};	
+			
+			$.ajax({
+				url: 'http://localhost:8080/OnlineFurnitureApp/processRequest',
+				data: dataString,
+				dataType: 'json',
+				success: function(response) 
+				{			
+					
+					var myNode = document.getElementById("content");
+					while (myNode.firstChild) {
+						myNode.removeChild(myNode.firstChild);
+					}
+						
+					if(response.success=="1")
+					 {
+									var table=document.createElement("table");
+									table.className ="center";
+									var space=document.createElement("tr");
+									var space1=document.createElement("td");
+									space.appendChild(space1);
+									table.appendChild(space);
+									
+									
+									var result=document.createElement("tr");
+									var result1=document.createElement("td");
+									result1.valign="center";
+									result1.innerHTML="<h3>Search Results under</h3>"+"<b>Category :</b>"+CategoryName+" ,<b>SubCategory :</b>"+SubCategoryName;
+									result.appendChild(result1);
+									table.appendChild(result);
+									//alert("3");	
+									var x= parseInt(response.COUNT,10);
+									//alert("6");
+									//alert("count :"+x);
+									for(var i=0;i<x-1;i=i+1)
+									{
+										var row=document.createElement("tr");
+										var column1=document.createElement("td");
+										var column2=document.createElement("td");
+										var image1=document.createElement("img");
+										
+										
+										var column11=document.createElement("td");
+										column11.valign="center";
+										column11.innerHTML=response.ITEMS[i].ITEM_CRITERIA+ ", Price :"+response.ITEMS[i].PRICE;
+													
+										//	alert("5");
+										var image1=document.createElement("img");
+										image1.hspace="30";
+										image1.vspace="30";
+										image1.width="150";
+										image1.height="150";
+										image1.cursor="hand";
+										image1.src=response.ITEMS[i].ITEM_URL;
+										image1.onclick=function() { createProductDetailsPage(this.src) };
+										
+										
+										column1.appendChild(image1);
+										
+										row.appendChild(column1);
+										row.appendChild(column11);
+										
+										table.appendChild(row);
+								   }
+									myNode.appendChild(table);
+						}
+						else
+						{
+							var noResults=document.createElement("h3");
+							noResults.innerHTML="Sorry, no search results found";
+							noResults.align="center";
+							myNode.appendChild(noResults);
+						}
+				   }
+			});
+		}
+		
+//function to fetch all the subcategories of categories	
+	
+		function getSubCategories(data)
+		{	
+			var dataString ={TAG:'getSubCategories',CATEGORY_NAME:data.innerHTML};	
+	
+			$.ajax({
+				url: 'http://localhost:8080/OnlineFurnitureApp/processRequest',
+				data: dataString,
+				dataType: 'json',
+				success: function(response) 
+				{
+					
+					var myNode = document.getElementById("navigation");
+					while (myNode.firstChild) {
+						myNode.removeChild(myNode.firstChild);
+					}
+
+					//Creating the back button
+					var back= document.createElement('li');			
+					var backAnchor= document.createElement('a');
+					backAnchor.href='http://localhost:8080/OnlineFurnitureApp/index.html';
+					backAnchor.innerHTML='All Categories';		
+					backAnchor.id='AllCategories';
+					back.appendChild(backAnchor);		
+					myNode.appendChild(back);
+					
+					
+					//Creating heading of navigation Pane
+					
+					var heading= document.createElement('li');			
+					var hAnchor= document.createElement('a');
+					hAnchor.id='heading';
+					hAnchor.innerHTML=data.innerHTML;		
+					heading.appendChild(hAnchor);		
+					myNode.appendChild(heading);
+					
+					for (var i=0;i<response.SUBCATEGORIES.length;i++) {		
+						var subHeading= document.createElement('li');	
+						var hAnchor= document.createElement('a');
+						hAnchor.innerHTML=response.SUBCATEGORIES[i].SUBCATEGORY;
+						var subcategory=response.SUBCATEGORIES[i].SUBCATEGORY;
+						hAnchor.onclick=function() { getItemURLSForSubCategory(data.innerHTML,this.innerHTML); };
+						
+						subHeading.appendChild(hAnchor);		
+						myNode.appendChild(subHeading);
+						}
+					
+					getItemURLSForCategory(data.innerHTML);
+				}
+			});
+	
+		}
+
+//function to create image elements 
+	
+		function createImages()
+		{
+			
+			var table=document.createElement("table");
+			
+			var row1=document.createElement("tr");
+			var row2=document.createElement("tr");
+			
+			var column1=document.createElement("td");
+			var column2=document.createElement("td");
+			var column3=document.createElement("td");
+			var column4=document.createElement("td");
+			
+			var image1=document.createElement("img");
+			image1.hspace="30";
+			image1.vspace="50";
+			image1.width="150";
+			image1.height="150";
+			image1.id="image1";
+			//image1.src="http://www.ikea.com/ms/media/roomsettings/20141/kitchen/20141_kiro10c/20141_kiro10c_hs02_PE374722.jpg";
+			
+			var image2=document.createElement("img");
+			image2.hspace="30";
+			image2.vspace="50";
+			image2.width="150";
+			image2.height="150";
+			image2.id="image2";
+			//image2.src="http://www.ikea.com/ms/media/roomsettings/20141/kitchen/20141_kiro10c/20141_kiro10c_hs02_PE374722.jpg";
+			
+			var image3=document.createElement("img");
+			image3.hspace="30";
+			image3.vspace="50";
+			image3.width="150";
+			image3.height="150";
+			image3.id="image3";
+			//image3.src="http://www.ikea.com/ms/media/roomsettings/20141/kitchen/20141_kiro10c/20141_kiro10c_hs02_PE374722.jpg";
+			
+			var image4=document.createElement("img");
+			image4.hspace="30";
+			image4.vspace="50";
+			image4.width="150";
+			image4.height="150";
+			image4.id="image4";
+			//image4.src="http://www.ikea.com/ms/media/roomsettings/20141/kitchen/20141_kiro10c/20141_kiro10c_hs02_PE374722.jpg";
+			
+			column1.appendChild(image1);
+			column2.appendChild(image2);
+		    var column11=document.createElement("td");
+			column11.valign="center";
+			column11.innerHTML="Item<h4 id='itemName1'> Furniture</h4>Price: $100 <br> <a href='file:///C:/Users/Bhargavi/Desktop/Summer%202014/SE-                                 1/Web/Item.html'>more details</a>";
+						
+		    var column21=document.createElement("td");
+			column21.valign="center";
+			column21.innerHTML="Item<h4 id='itemName1'> Furniture</h4>Price: $100 <br> <a href='file:///C:/Users/Bhargavi/Desktop/Summer%202014/SE-                                 1/Web/Item.html'>more details</a>";
+			column3.appendChild(image3);
+			column4.appendChild(image4);
+
+		    var column31=document.createElement("td");
+			column31.valign="center";
+			column31.innerHTML="Item<h4 id='itemName1'> Furniture</h4>Price: $100 <br> <a href='file:///C:/Users/Bhargavi/Desktop/Summer%202014/SE-                                 1/Web/Item.html'>more details</a>";
+		    var column41=document.createElement("td");
+			column41.valign="center";
+			column41.innerHTML="Item<h4 id='itemName1'> Furniture</h4>Price: $100 <br> <a href='file:///C:/Users/Bhargavi/Desktop/Summer%202014/SE-                                 1/Web/Item.html'>more details</a>";
+			
+                        row1.appendChild(column1);
+			row1.appendChild(column11);
+			row1.appendChild(column2);
+			row1.appendChild(column21);
+			
+			row2.appendChild(column3);
+			row2.appendChild(column31);
+			row2.appendChild(column4);
+			row2.appendChild(column41);
+		
+			table.appendChild(row1);
+			table.appendChild(row2);
+			
+			var myNode = document.getElementById("content");
+			while (myNode.firstChild) {
+			       myNode.removeChild(myNode.firstChild);
+			}
+			myNode.appendChild(table);
+		}
+	
+</script>
+
+</body>
+</html>
+

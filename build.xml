@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="OnlineFurnitureApp">
+    <property environment="env"/>
+    <property name="ECLIPSE_HOME" value="../../eclipse"/>
+    <property name="junit.output.dir" value="junit"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.7"/>
+    <property name="source" value="1.7"/>
+    <path id="Apache Tomcat v7.0 [Apache Tomcat v7.0 (4)].libraryclasspath">
+        <pathelement location="../../tomcat/lib/annotations-api.jar"/>
+        <pathelement location="../../tomcat/lib/catalina-ant.jar"/>
+        <pathelement location="../../tomcat/lib/catalina-ha.jar"/>
+        <pathelement location="../../tomcat/lib/catalina-tribes.jar"/>
+        <pathelement location="../../tomcat/lib/catalina.jar"/>
+        <pathelement location="../../tomcat/lib/ecj-4.3.1.jar"/>
+        <pathelement location="../../tomcat/lib/el-api.jar"/>
+        <pathelement location="../../tomcat/lib/jasper-el.jar"/>
+        <pathelement location="../../tomcat/lib/jasper.jar"/>
+        <pathelement location="../../tomcat/lib/json-simple-1.1.1.jar"/>
+        <pathelement location="../../tomcat/lib/jsp-api.jar"/>
+        <pathelement location="../../tomcat/lib/mysql-connector-java-5.0.8-bin.jar"/>
+        <pathelement location="../../tomcat/lib/servlet-api.jar"/>
+        <pathelement location="../../tomcat/lib/tomcat-api.jar"/>
+        <pathelement location="../../tomcat/lib/tomcat-coyote.jar"/>
+        <pathelement location="../../tomcat/lib/tomcat-dbcp.jar"/>
+        <pathelement location="../../tomcat/lib/tomcat-i18n-es.jar"/>
+        <pathelement location="../../tomcat/lib/tomcat-i18n-fr.jar"/>
+        <pathelement location="../../tomcat/lib/tomcat-i18n-ja.jar"/>
+        <pathelement location="../../tomcat/lib/tomcat-jdbc.jar"/>
+        <pathelement location="../../tomcat/lib/tomcat-util.jar"/>
+        <pathelement location="../../tomcat/lib/tomcat7-websocket.jar"/>
+        <pathelement location="../../tomcat/lib/websocket-api.jar"/>
+    </path>
+    <path id="Web App Libraries.libraryclasspath"/>
+    <path id="EAR Libraries.libraryclasspath"/>
+    <path id="OnlineFurnitureApp.classpath">
+        <pathelement location="build/classes"/>
+        <path refid="Apache Tomcat v7.0 [Apache Tomcat v7.0 (4)].libraryclasspath"/>
+        <path refid="Web App Libraries.libraryclasspath"/>
+        <path refid="EAR Libraries.libraryclasspath"/>
+        <pathelement location="C:/Users/DELL/Downloads/junit-4.10.jar"/>
+    </path>
+    <target name="init">
+        <mkdir dir="build/classes"/>
+        <copy includeemptydirs="false" todir="build/classes">
+            <fileset dir="src">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="build/classes"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="build/classes" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="OnlineFurnitureApp.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
+        <copy todir="${ant.library.dir}">
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </copy>
+        <unzip dest="${ant.library.dir}">
+            <patternset includes="jdtCompilerAdapter.jar"/>
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </unzip>
+    </target>
+    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
+        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+        <antcall target="build"/>
+    </target>
+    <target name="AllUseCaseTests">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="com.FurnitureShop.TestCases.AllUseCaseTests" todir="${junit.output.dir}"/>
+            <classpath refid="OnlineFurnitureApp.classpath"/>
+        </junit>
+    </target>
+    <target name="BasicSearch">
+        <java classname="com.FurnitureShop.Controller.BasicSearch" failonerror="true" fork="yes">
+            <classpath refid="OnlineFurnitureApp.classpath"/>
+        </java>
+    </target>
+    <target name="BasicSearchTestCase">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="com.FurnitureShop.TestCases.BasicSearchTestCase" todir="${junit.output.dir}"/>
+            <classpath refid="OnlineFurnitureApp.classpath"/>
+        </junit>
+    </target>
+    <target name="BrowseProductsTestCase">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="com.FurnitureShop.TestCases.BrowseProductsTestCase" todir="${junit.output.dir}"/>
+            <classpath refid="OnlineFurnitureApp.classpath"/>
+        </junit>
+    </target>
+    <target name="ProductDetailsTestCase">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="com.FurnitureShop.TestCases.ProductDetailsTestCase" todir="${junit.output.dir}"/>
+            <classpath refid="OnlineFurnitureApp.classpath"/>
+        </junit>
+    </target>
+    <target name="StoreLocationTestCase">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="com.FurnitureShop.TestCases.StoreLocationTestCase" todir="${junit.output.dir}"/>
+            <classpath refid="OnlineFurnitureApp.classpath"/>
+        </junit>
+    </target>
+    <target name="junitreport">
+        <junitreport todir="${junit.output.dir}">
+            <fileset dir="${junit.output.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${junit.output.dir}"/>
+        </junitreport>
+    </target>
+</project>
